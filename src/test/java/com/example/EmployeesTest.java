@@ -5,7 +5,7 @@ import org.mockito.Mockito;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 
 public class EmployeesTest {
     List<Employee> mockRepo = List.of(
@@ -45,5 +45,14 @@ public class EmployeesTest {
         doThrow(new RuntimeException()).when(bankService).pay(isA(String.class), eq(1000000.0));
 
         assertEquals(employees.payEmployees(), 7);
+    }
+
+    @Test
+    void payMethodIsInvoked() {
+
+        employees.payEmployees();
+
+        verify(bankService, times(8)).pay(anyString(), anyDouble());
+
     }
 }
